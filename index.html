@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ToDoList</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="todo-container">
+    <h1>To-Do List</h1>
+
+    <div id="date"></div>
+
+    <div class="todo-input">
+      <input id="todo-input" type="text" placeholder="Tambahkan tugas baru.." />
+      <button id="add-button" onclick="addTask()">Tambahkan</button>
+    </div>
+
+    <ul id="todo-list" class="todo-list">
+      <!-- <li class="checked">Task 1</li>
+      <li>Task 2</li>
+      <li>Task 3</li> -->
+    </ul>
+
+    <button id="clear-btn" class="clear-btn" onclick="clearAll()">Hapus Semua Tugas</button>
+  </div>
+
+  <script>
+    const date = document.getElementById("date");
+    const input = document.getElementById("todo-input")
+    const todoList = document.getElementById("todo-list")
+    const clrBtn = document.getAnimations("clear-btn")
+
+    function addTask() {
+      if (input.value === '') {
+        alert("Isi Tugas Dulu!")
+      } else {
+        let li = document.createElement("li");
+        li.innerHTML = input.value;
+        todoList.appendChild(li);
+        let span = document.createElement("span");
+        span.innerHTML = "\u00d7"
+        li.appendChild(span);
+      }
+      input.value = '';
+      saveData();
+    }
+
+    todoList.addEventListener("click", function (e) {
+      if (e.target.tagName === "LI") {
+        e.target.classList.toggle("checked")
+        saveData();
+      } else if (e.target.tagName === "SPAN") {
+        e.target.parentElement.remove();
+        saveData();
+      }
+    }, false);
+
+    function saveData() {
+      localStorage.setItem("todo", todoList.innerHTML);
+    }
+
+    function showTask() {
+      todoList.innerHTML = localStorage.getItem("todo");
+    }
+
+    showTask();
+
+    const dateFormat = { weekday: "long", month: "short", day: "numeric" };
+    const today = new Date();
+
+    date.innerHTML = today.toLocaleDateString("en-US", dateFormat);
+
+    function clearAll() {
+      if (confirm("Apakah yakin untuk hapus semuanya??")){
+        todoList.innerHTML = '';
+        localStorage.removeItem("todo")
+      }
+    }
+
+    clearBtn.addEventListener("click", clearAll);
+    // clrBtn.addEventListener("click", () => {
+    //     alert("Tombol ditekan");
+    // });
+
+
+    //   function addTodo() {
+    //     let input = document.getElementById("todo-input").value;
+    //     document.getElementById("isi").innerHTML=input
+
+    //     document.getElementById("todo-input").value = "";
+    //   }
+
+    // function looping(){
+    //     let i
+    //     let text = ""
+    //     for (i=1; i<=10; i++){
+    //         text += "<li> angka" + i + "<br>"
+    //     }
+    //     daftar.innerHTML = text
+    // }
+  </script>
+</body>
+
+</html>
